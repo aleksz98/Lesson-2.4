@@ -22,33 +22,24 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        updateSliders()
+        updateUI()
+    }
+    
+    // MARK: - Private @IBAction
+    @IBAction private func sliderValueChanged(_ sender: Any) {
+        updateUI()
     }
 }
 
 extension MainViewController {
     
     // MARK: - Private functions
-    @objc private func sliderValueChanged() {
-        updateColor()
-        updateSliderValueLabels()
-    }
-    
-    private func updateSliders() {
-        redSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        greenSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        blueSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        updateColor()
-    }
-    
-    private func updateColor() {
+    private func updateUI() {
         let red = CGFloat(redSlider.value)
         let green = CGFloat(greenSlider.value)
         let blue = CGFloat(blueSlider.value)
         backgroundColorView.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
-    }
-    
-    private func updateSliderValueLabels() {
+        
         let redValue = String(format: "%.2f", redSlider.value)
         let greenValue = String(format: "%.2f", greenSlider.value)
         let blueValue = String(format: "%.2f", blueSlider.value)
