@@ -29,19 +29,16 @@ final class MainViewController: UIViewController {
     // MARK: - Private @IBAction
     @IBAction private func sliderValueChanged(_ sender: UIButton) {
         updateUI()
-        updateInfo()
+        updateSliders()
     }
 }
 
 // MARK: - MainViewController
 extension MainViewController {
     
-    private func updateInfo() {
-        let values = [redSlider.value, greenSlider.value, blueSlider.value]
-        let labels = [redNumberLabel, greenNumberLabel, blueNumberLabel]
-        
-        for (index, label) in labels.enumerated() {
-            label?.text = String(format: "%.2f", values[index])
+    private func updateSliders() {
+        for (index, label) in [(redNumberLabel, redSlider.value), (greenNumberLabel, greenSlider.value), (blueNumberLabel, blueSlider.value)] {
+            index?.text = String(format: "%.2f", label)
         }
     }
     
