@@ -11,9 +11,11 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private IBOutlet
     @IBOutlet private weak var backgroundColorView: UIView!
+    
     @IBOutlet private weak var redNumberLabel: UILabel!
     @IBOutlet private weak var greenNumberLabel: UILabel!
     @IBOutlet private weak var blueNumberLabel: UILabel!
+    
     @IBOutlet private weak var redSlider: UISlider!
     @IBOutlet private weak var greenSlider: UISlider!
     @IBOutlet private weak var blueSlider: UISlider!
@@ -21,30 +23,30 @@ final class MainViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         updateUI()
     }
     
     // MARK: - Private @IBAction
-    @IBAction private func sliderValueChanged(_ sender: Any) {
+    @IBAction private func sliderValueChanged(_ sender: UIButton) {
         updateUI()
+        updateInfo()
     }
 }
 
+// MARK: - MainViewController
 extension MainViewController {
     
-    // MARK: - Private functions
-    private func updateUI() {
-        let red = CGFloat(redSlider.value)
-        let green = CGFloat(greenSlider.value)
-        let blue = CGFloat(blueSlider.value)
-        backgroundColorView.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
+    private func updateInfo() {
+        let values = [redSlider.value, greenSlider.value, blueSlider.value]
+        let labels = [redNumberLabel, greenNumberLabel, blueNumberLabel]
         
-        let redValue = String(format: "%.2f", redSlider.value)
-        let greenValue = String(format: "%.2f", greenSlider.value)
-        let blueValue = String(format: "%.2f", blueSlider.value)
-        redNumberLabel.text = redValue
-        greenNumberLabel.text = greenValue
-        blueNumberLabel.text = blueValue
+        for (index, label) in labels.enumerated() {
+            label?.text = String(format: "%.2f", values[index])
+        }
+    }
+    
+    private func updateUI() {
+        backgroundColorView.layer.cornerRadius = 10
+        backgroundColorView.backgroundColor = UIColor(red: CGFloat(redSlider.value), green: CGFloat(greenSlider.value), blue: CGFloat(blueSlider.value), alpha: 1)
     }
 }
