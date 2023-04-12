@@ -22,19 +22,31 @@ final class MainViewController: UIViewController {
     
     // MARK: - Public variables
     weak var delegate: MainViewControllerDelegate?
-    var redValue: Float = 1
-    var greenValue: Float = 1
-    var blueValue: Float = 1
-
+    var redValue: Float?
+    var greenValue: Float?
+    var blueValue: Float?
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        updateBackgroundView()
+        updateLabelText()
+        updateSliderValue()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToWelcomeViewController" {
+            if let destinationVC = segue.destination as? WelcomeViewController {
+                destinationVC.redValue = redSlider.value
+                destinationVC.greenValue = greenSlider.value
+                destinationVC.blueValue = blueSlider.value
+            }
+        }
     }
     
     // MARK: - Private @IBAction
     @IBAction private func sliderValueChanged(_ sender: UIButton) {
-        updateUI()
+        updateBackgroundView()
         updateSliders()
         delegate?.didUpdateBackgroundColor(red: CGFloat(redSlider.value),
                                            green: CGFloat(greenSlider.value),
@@ -54,10 +66,26 @@ extension MainViewController {
         }
     }
     
-    private func updateUI() {
+    private func updateBackgroundView() {
         backgroundColorView.layer.cornerRadius = 10
-        backgroundColorView.backgroundColor = UIColor(red: CGFloat(redSlider.value), green: CGFloat(greenSlider.value), blue: CGFloat(blueSlider.value), alpha: 1)
+        backgroundColorView.backgroundColor = UIColor(red: CGFloat(redValue ?? 1),
+                                                      green: CGFloat(greenValue ?? 1),
+                                                      blue: CGFloat(blueValue ?? 1),
+                                                      alpha: 1)
     }
+
+    private func updateLabelText() {
+        for (label, value) in [(redNumberLabel, redValue), (greenNumberLabel, greenValue), (blueNumberLabel, blueValue)] {
+                  label?.text = String(format: "%.2f", value ?? 1)
+        }
+    }
+    
+    private func updateSliderValue() {
+        redSlider.value = redValue!
+        greenSlider.value = greenValue!
+        blueSlider.value = blueValue!
+    }
+
 }
 
 // MARK: - MainViewControllerDelegate

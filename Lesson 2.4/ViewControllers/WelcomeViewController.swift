@@ -9,15 +9,23 @@ import UIKit
 
 final class WelcomeViewController: UIViewController {
     
+    // MARK: - Public variables
+    var redValue: Float?
+    var greenValue: Float?
+    var blueValue: Float?
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MainViewController" {
             if let destinationVC = segue.destination as? MainViewController {
+                destinationVC.redValue = redValue ?? 1
+                destinationVC.greenValue = greenValue ?? 1
+                destinationVC.blueValue = blueValue ?? 1
                 destinationVC.delegate = self
             }
         }
@@ -26,9 +34,9 @@ final class WelcomeViewController: UIViewController {
     // MARK: - Private @IBAction
     @IBAction private func unwind(for segue: UIStoryboardSegue) {
         if let sourceVC = segue.source as? MainViewController {
-            didUpdateBackgroundColor(red: CGFloat(sourceVC.redValue),
-                                     green: CGFloat(sourceVC.greenValue),
-                                     blue: CGFloat(sourceVC.blueValue))
+            didUpdateBackgroundColor(red: CGFloat(sourceVC.redValue ?? 1),
+                                     green: CGFloat(sourceVC.greenValue ?? 1),
+                                     blue: CGFloat(sourceVC.blueValue ?? 1))
         }
     }
 }
