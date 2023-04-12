@@ -20,6 +20,12 @@ final class MainViewController: UIViewController {
     @IBOutlet private weak var greenSlider: UISlider!
     @IBOutlet private weak var blueSlider: UISlider!
     
+    // MARK: - Public variables
+    weak var delegate: MainViewControllerDelegate?
+    var redValue: Float = 1
+    var greenValue: Float = 1
+    var blueValue: Float = 1
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +36,12 @@ final class MainViewController: UIViewController {
     @IBAction private func sliderValueChanged(_ sender: UIButton) {
         updateUI()
         updateSliders()
+        delegate?.didUpdateBackgroundColor(red: CGFloat(redSlider.value),
+                                           green: CGFloat(greenSlider.value),
+                                           blue: CGFloat(blueSlider.value))
+        redValue = redSlider.value
+        greenValue = greenSlider.value
+        blueValue = blueSlider.value
     }
 }
 
@@ -46,4 +58,9 @@ extension MainViewController {
         backgroundColorView.layer.cornerRadius = 10
         backgroundColorView.backgroundColor = UIColor(red: CGFloat(redSlider.value), green: CGFloat(greenSlider.value), blue: CGFloat(blueSlider.value), alpha: 1)
     }
+}
+
+// MARK: - MainViewControllerDelegate
+protocol MainViewControllerDelegate: AnyObject {
+    func didUpdateBackgroundColor(red: CGFloat, green: CGFloat, blue: CGFloat)
 }
